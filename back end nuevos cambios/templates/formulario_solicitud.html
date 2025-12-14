@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Solicitar Pedido{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <h1 class="mb-4">
+            {% if producto %}
+                Solicitar Personalización de: {{ producto.nombre }}
+            {% else %}
+                Solicitud de Pedido Personalizado
+            {% endif %}
+        </h1>
+
+        {# mensajes de éxito / error de Django messages #}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} mb-3">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {# si viene desde un producto del catálogo, mandamos su id oculto #}
+            {% if producto %}
+                <input type="hidden" name="producto_referencia" value="{{ producto.id }}">
+            {% endif %}
+
+            <h4 class="mb-3">Tus Datos de Contacto</h4>
+
+            <div class="mb-3">
+                <label class="form-label">Nombre del cliente *</label>
+                <input type="text" name="nombre_cliente" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email_cliente" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Teléfono</label>
+                <input type="text" name="telefono_cliente" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Red social (Instagram, Facebook, etc.)</label>
+                <input type="text" name="red_social_cliente" class="form-control">
+            </div>
+
+            <hr>
+
+            <h4 class="mb-3">Detalles del Pedido</h4>
+
+            <div class="mb-3">
+                <label class="form-label">Descripción de lo solicitado *</label>
+                <textarea name="descripcion_solicitada"
+                          class="form-control"
+                          rows="4"
+                          required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Fecha en que necesitas el producto (opcional)</label>
+                <input type="date" name="fecha_necesidad" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Imágenes de referencia (máx. 3)</label>
+                <input type="file"
+                       name="imagenes_referencia"
+                       class="form-control"
+                       multiple>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3">
+                Enviar Solicitud de Pedido
+            </button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
