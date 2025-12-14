@@ -55,3 +55,4 @@ tzdata==2024.1
 urllib3==2.2.3
 ursina==7.0.0
 whitenoise==6.11.0
+gunicorn
